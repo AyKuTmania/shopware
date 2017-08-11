@@ -84,8 +84,8 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
      */
     public function getVoucherAction()
     {
-        $offset = intval($this->Request()->start);
-        $limit = intval($this->Request()->limit);
+        $offset = (int) $this->Request()->start;
+        $limit = (int) $this->Request()->limit;
         $filter = $this->Request()->filter;
         $filter = $filter[0]['value'];
         $sqlBindings = [];
@@ -93,7 +93,8 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
         if (!empty($filter)) {
             $searchSQL = 'AND v.description LIKE :filter
                             OR v.vouchercode LIKE :filter
-                            OR v.value LIKE :filter';
+                            OR v.value LIKE :filter
+                            OR (SELECT 1 FROM s_emarketing_voucher_codes WHERE voucherID = v.id AND code LIKE :filter LIMIT 1)';
             $sqlBindings['filter'] = '%' . $filter . '%';
         }
         //sorting data
@@ -101,7 +102,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
         $sortField = $sortData[0]['property'];
         $dir = $sortData[0]['direction'];
         $sort = '';
-        if (!empty($sortField) && $dir === 'ASC' || $dir === 'DESC') {
+        if ((!empty($sortField) && $dir === 'ASC') || $dir === 'DESC') {
             //to prevent sql-injections
             $sortField = Shopware()->Db()->quoteIdentifier($sortField);
             $sort = 'ORDER BY ' . $sortField . ' ' . $dir;
@@ -139,7 +140,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
      */
     public function getVoucherCodesAction()
     {
-        $voucherId = intval($this->Request()->voucherID);
+        $voucherId = (int) $this->Request()->voucherID;
 
         $orderBy = $this->Request()->getParam('sort');
         $filter = $this->Request()->getParam('filter');
@@ -163,8 +164,8 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
      */
     public function createVoucherCodesAction()
     {
-        $voucherId = intval($this->Request()->voucherId);
-        $numberOfUnits = intval($this->Request()->numberOfUnits);
+        $voucherId = (int) $this->Request()->voucherId;
+        $numberOfUnits = (int) $this->Request()->numberOfUnits;
         $codePattern = $this->Request()->codePattern;
 
         $codePattern = str_replace('%D', '%d', $codePattern);
@@ -205,7 +206,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
      */
     public function updateVoucherCodesAction()
     {
-        $codeId = intval($this->Request()->getParam('id'));
+        $codeId = (int) $this->Request()->getParam('id');
         /** @var Code $code */
         $code = $this->get('models')->getRepository(Code::class)->find($codeId);
 
@@ -231,7 +232,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
     public function exportVoucherCodeAction()
     {
         $this->Front()->Plugins()->Json()->setRenderer(false);
-        $voucherId = intval($this->Request()->voucherId);
+        $voucherId = (int) $this->Request()->voucherId;
 
         $dataQuery = $this->getVoucherRepository()->getVoucherCodeListQuery($voucherId);
         $resultArray = $dataQuery->getArrayResult();
@@ -258,7 +259,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
      */
     public function getVoucherDetailAction()
     {
-        $voucherID = intval($this->Request()->voucherID);
+        $voucherID = (int) $this->Request()->voucherID;
 
         $query = $this->getVoucherRepository()->getVoucherDetailQuery($voucherID);
         $model = $query->getOneOrNullResult(\Doctrine\ORM\AbstractQuery::HYDRATE_OBJECT);
@@ -343,7 +344,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
     public function validateVoucherCodeAction()
     {
         $voucherCode = $this->Request()->value;
-        $voucherID = intval($this->Request()->param);
+        $voucherID = (int) $this->Request()->param;
         $voucherData = $this->getVoucherRepository()
             ->getValidateVoucherCodeQuery($voucherCode, $voucherID)
             ->getArrayResult();
@@ -361,7 +362,7 @@ class Shopware_Controllers_Backend_Voucher extends Shopware_Controllers_Backend_
     public function validateOrderCodeAction()
     {
         $orderCode = $this->Request()->value;
-        $voucherID = intval($this->Request()->param);
+        $voucherID = (int) $this->Request()->param;
         $voucherData = $this->getVoucherRepository()
             ->getValidateOrderCodeQuery($orderCode, $voucherID)
             ->getArrayResult();

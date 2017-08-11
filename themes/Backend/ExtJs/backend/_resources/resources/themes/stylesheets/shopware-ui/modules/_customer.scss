@@ -12,7 +12,7 @@
 }
 
 .customer-stream-view .stream-save-button-container {
-  border-top: 1px solid #a4b5c0;
+  border: 1px solid #a4b5c0;
 }
 
 .stream-chart-container {
@@ -100,6 +100,9 @@
 }
 
 .stream-listing {
+  border: none;
+  border-bottom: 1px solid #A4B5C0;
+
   .rotate img.sprite-arrow-circle-315 {
     -webkit-animation: rotation 1s linear infinite;
     -moz-animation: rotation 1s linear infinite;
@@ -109,5 +112,14 @@
     -webkit-filter: #{"grayscale(100%)"};
     -moz-filter: #{"grayscale(100%)"};
     filter:#{"grayscale(100%)"};
+  }
+  .x-grid-cell-inner {
+    line-height: 16px;
+  }
+  .lock-icon {
+    width:16px;
+    height:16px;
+    display: inline-block;
+    margin-right: 3px;
   }
 }

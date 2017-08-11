@@ -99,7 +99,7 @@ class ProductAttributeFacetHandler implements PartialFacetHandlerInterface
 
         $sqlField = 'productAttribute.' . $facet->getField();
         $query->andWhere($sqlField . ' IS NOT NULL')
-            ->andWhere($sqlField . " != ''");
+            ->andWhere($sqlField . " NOT IN ('', 0, '0000-00-00')");
 
         /** @var ConfigurationStruct $attribute */
         $attribute = $this->crudService->get('s_articles_attributes', $facet->getField());
@@ -234,6 +234,13 @@ class ProductAttributeFacetHandler implements PartialFacetHandlerInterface
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
         if (empty($result)) {
+            return null;
+        }
+
+        if ($result['minValues'] === null && $result['maxValues'] === null) {
+            return null;
+        }
+        if ($result['minValues'] === $result['maxValues']) {
             return null;
         }
 

@@ -49,17 +49,23 @@ class PresetDataSynchronizer implements PresetDataSynchronizerInterface
     private $componentHandlers;
 
     /**
+     * @var string
+     */
+    private $rootDir;
+
+    /**
      * @param ModelManager                $modelManager
      * @param \Enlight_Event_EventManager $eventManager
      * @param array                       $componentHandlers
      */
-    public function __construct(ModelManager $modelManager, \Enlight_Event_EventManager $eventManager, array $componentHandlers)
+    public function __construct(ModelManager $modelManager, \Enlight_Event_EventManager $eventManager, array $componentHandlers, $rootDir)
     {
         $this->modelManager = $modelManager;
         $this->eventManager = $eventManager;
 
         $this->componentHandlers = $componentHandlers;
         $this->componentHandlers = $this->registerComponentHandlers();
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -77,7 +83,10 @@ class PresetDataSynchronizer implements PresetDataSynchronizerInterface
             throw new PresetAssetImportException('The preset data of the ' . $preset->getName() . ' preset seems to be invalid.');
         }
 
-        if (empty($presetData['syncData']['assets'])) {
+        // continue if no sync data present or we just have an assets key which is empty
+        if (empty($presetData['syncData'])
+            || (count($presetData['syncData']) === 1 && empty($presetData['syncData']['assets']))
+        ) {
             return;
         }
 
@@ -98,6 +107,8 @@ class PresetDataSynchronizer implements PresetDataSynchronizerInterface
         }
 
         $syncData = new ParameterBag($presetData['syncData']);
+
+        $this->setAssetPaths($syncData);
 
         try {
             $element = $handler->import($element, $syncData);
@@ -215,5 +226,24 @@ class PresetDataSynchronizer implements PresetDataSynchronizerInterface
         }
 
         return false;
+    }
+
+    /**
+     * Sets paths for assets coming from plugins which use relative paths.
+     *
+     * @param ParameterBag $syncData
+     */
+    private function setAssetPaths(ParameterBag $syncData)
+    {
+        $assets = $syncData->get('assets');
+
+        foreach ($assets as $key => &$path) {
+            if (0 === strpos($path, '/custom/')) {
+                $path = 'file://' . $this->rootDir . $path;
+            }
+        }
+        unset($path);
+
+        $syncData->set('assets', $assets);
     }
 }

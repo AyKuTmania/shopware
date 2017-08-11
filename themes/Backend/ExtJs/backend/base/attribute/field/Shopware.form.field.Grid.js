@@ -77,6 +77,10 @@ Ext.define('Shopware.form.field.Grid', {
      */
     ignoreDisabled: true,
 
+    allowDelete: true,
+
+    allowAdd: true,
+
     initComponent: function() {
         var me = this;
 
@@ -187,7 +191,13 @@ Ext.define('Shopware.form.field.Grid', {
     },
 
     createActionColumnItems: function() {
-        return [this.createDeleteColumn()];
+        var items = [];
+
+        if (this.allowDelete) {
+            items.push(this.createDeleteColumn());
+        }
+
+        return items;
     },
 
     createDeleteColumn: function() {
@@ -265,6 +275,7 @@ Ext.define('Shopware.form.field.Grid', {
             store: me.searchStore,
             multiSelect: true,
             margin: margin,
+            hidden: !me.allowAdd,
             isFormField: false,
             pageSize: me.searchStore.pageSize,
             listeners: {
@@ -375,11 +386,14 @@ Ext.define('Shopware.form.field.Grid', {
     },
 
     fixLayout: function() {
-        try {
-            this.setHeight(this.getHeight());
-        } catch (e) {
-
+        if (!this.rendered) {
+            return;
         }
+        if (this.getHeight() <= 0) {
+            return;
+        }
+
+        this.setHeight(this.getHeight());
     },
 
     getSubmitData: function() {
@@ -391,7 +405,7 @@ Ext.define('Shopware.form.field.Grid', {
     isValid: function() {
         var me = this;
 
-        if (me.searchField) {
+        if (me.searchField && me.searchField.combo) {
             me.searchField.combo.clearInvalid();
         }
 
@@ -403,7 +417,7 @@ Ext.define('Shopware.form.field.Grid', {
             return true;
         }
 
-        if (me.searchField) {
+        if (me.searchField && me.searchField.combo) {
             me.searchField.combo.markInvalid([
                 '{s name="not_empty"}{/s}'
             ]);

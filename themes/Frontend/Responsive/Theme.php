@@ -31,23 +31,21 @@ use Shopware\Components\Theme\ConfigSet;
 class Theme extends \Shopware\Components\Theme
 {
     /**
-     * Defines the extended Theme
+     * Defines the extended Theme.
      *
      * @var string
      */
     protected $extend = 'Bare';
 
     /**
-     * Defines the human readable theme name
-     * which displayed in the backend
+     * Defines the human readable theme name which is displayed in the backend.
      *
      * @var string
      */
     protected $name = '__theme_name__';
 
     /**
-     * Allows to define a description text
-     * for the theme
+     * Allows to define a description text for the theme.
      *
      * @var string
      */
@@ -73,7 +71,7 @@ class Theme extends \Shopware\Components\Theme
     protected $injectBeforePlugins = true;
 
     /**
-     * Javascript files which will be used in the theme
+     * Javascript files which will be used in the theme.
      *
      * @var array
      */
@@ -137,12 +135,13 @@ class Theme extends \Shopware\Components\Theme
         'src/js/jquery.address-selection.js',
         'src/js/jquery.address-editor.js',
         'src/js/jquery.datepicker.js',
+        'src/js/jquery.storage-field.js',
         'src/js/jquery.cookie-permission.js',
         'src/js/jquery.shopware-responsive.js',
     ];
 
     /**
-     * Holds default fieldSet configuration
+     * Holds default fieldSet configuration.
      *
      * @var array
      */
@@ -154,7 +153,7 @@ class Theme extends \Shopware\Components\Theme
     ];
 
     /**
-     * Holds default theme colors
+     * Holds default theme colors.
      *
      * @var array
      */
@@ -234,7 +233,7 @@ class Theme extends \Shopware\Components\Theme
     ];
 
     /**
-     * Holds default font configuration
+     * Holds default font configuration.
      *
      * @var array
      */
@@ -272,6 +271,137 @@ class Theme extends \Shopware\Components\Theme
         $container->addTab($tab);
 
         $tab->addElement($this->createBottomTabPanel());
+    }
+
+    /**
+     * Helper function to merge default theme colors with color schemes.
+     *
+     * @param ArrayCollection $collection
+     */
+    public function createConfigSets(ArrayCollection $collection)
+    {
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_turquoise__')->setDescription(
+            '__color_scheme_turquoise_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#1db3b8',
+                    'brand-primary-light' => 'lighten(@brand-primary, 5%)',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_green__')->setDescription(
+            '__color_scheme_green_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#72a425',
+                    'brand-primary-light' => 'saturate(lighten(@brand-primary, 5%), 5%)',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_red__')->setDescription(
+            '__color_scheme_red_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#be0a30',
+                    'brand-primary-light' => 'saturate(lighten(@brand-primary, 10%), 5%)',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_pink__')->setDescription(
+            '__color_scheme_pink_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#d31e81',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_gray__')->setDescription(
+            '__color_scheme_gray_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#555555',
+                    'brand-primary-light' => 'lighten(@brand-primary, 10%)',
+                    'brand-secondary' => '#999999',
+                    'brand-secondary-dark' => 'darken(@brand-secondary, 8%)',
+                    'text-color' => '@brand-primary-light',
+                    'text-color-dark' => '@brand-primary',
+                    'link-color' => '@brand-secondary',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_brown__')->setDescription(
+            '__color_scheme_brown_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#613400',
+                    'brand-primary-light' => 'saturate(lighten(@brand-primary,5%), 5%)',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_blue__')->setDescription(
+            '__color_scheme_blue_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#009ee0',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_black__')->setDescription(
+            '__color_scheme_black_description__'
+        )->setValues(
+            array_merge(
+                $this->themeColorDefaults,
+                [
+                    'brand-primary' => '#000000',
+                    'brand-primary-light' => 'lighten(@brand-primary, 20%)',
+                    'brand-secondary' => '#555555',
+                    'brand-secondary-dark' => 'darken(@brand-secondary, 10%)',
+                ]
+            )
+        );
+        $collection->add($set);
+
+        $set = new ConfigSet();
+        $set->setName('__color_scheme_orange__')->setDescription(
+            '__color_scheme_orange_description__'
+        )->setValues($this->themeColorDefaults);
+        $collection->add($set);
     }
 
     private function createBasicFieldSet()
@@ -316,7 +446,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the child-tabs of ("Responsive colors")
+     * Helper function to create the child-tabs of ("Responsive colors").
      *
      * @return Form\Container\Tab
      */
@@ -341,7 +471,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the tab ("General")
+     * Helper function to create the tab ("General").
      *
      * @return Form\Container\Tab
      */
@@ -522,7 +652,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the tab ("Typography")
+     * Helper function to create the tab ("Typography").
      *
      * @return Form\Container\Tab
      */
@@ -642,7 +772,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the tab ("Buttons & Panels")
+     * Helper function to create the tab ("Buttons & Panels").
      *
      * @return Form\Container\Tab
      */
@@ -880,7 +1010,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the tab ("Forms")
+     * Helper function to create the tab ("Forms").
      *
      * @return Form\Container\Tab
      */
@@ -1042,7 +1172,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the tab ("Tables & Badges")
+     * Helper function to create the tab ("Tables & Badges").
      *
      * @return Form\Container\Tab
      */
@@ -1187,7 +1317,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to create the main tab ("Responsive configuration")
+     * Helper function to create the main tab ("Responsive configuration").
      *
      * @return Form\Container\Tab
      */
@@ -1410,7 +1540,7 @@ class Theme extends \Shopware\Components\Theme
     }
 
     /**
-     * Helper function to get the attribute of a checkbox field which shows a description label
+     * Helper function to get the attribute of a checkbox field which shows a description label.
      *
      * @param $snippetName
      *

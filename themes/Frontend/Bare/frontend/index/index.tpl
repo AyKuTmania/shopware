@@ -14,10 +14,11 @@
 <body class="{block name="frontend_index_body_classes"}{strip}
     is--ctl-{controllerName|lower} is--act-{controllerAction|lower}
     {if $sUserLoggedIn} is--user{/if}
+    {if $sOneTimeAccount} is--one-time-account{/if}
     {if $sTarget} is--target-{$sTarget|escapeHtml}{/if}
-    {if $theme.checkoutHeader && (({controllerName|lower} == "checkout" && {controllerAction|lower} != "cart") || ({controllerName|lower} == "register" && $sTarget != "account"))} is--minimal-header{/if}
+    {if $theme.checkoutHeader && (({controllerName|lower} == "checkout" && {controllerAction|lower} != "cart") || ({controllerName|lower} == "register" && ($sTarget != "account" && $sTarget != "address")))} is--minimal-header{/if}
     {if !$theme.displaySidebar} is--no-sidebar{/if}
-    {/strip}{/block}">
+    {/strip}{/block}" {block name="frontend_index_body_attributes"}{/block}>
 
     {block name='frontend_index_after_body'}{/block}
 
@@ -82,7 +83,7 @@
             {/block}
 
             {block name='frontend_index_content_main'}
-                <section class="content-main container block-group">
+                <section class="{block name="frontend_index_content_main_classes"}content-main container block-group{/block}">
 
                     {* Breadcrumb *}
                     {block name='frontend_index_breadcrumb'}
@@ -199,6 +200,7 @@
                         '{$key}': '{$value}',
                     {/foreach}
                     'articleId': ~~('{$sArticle.articleID}'),
+                    'orderNumber': '{$sArticle.ordernumber}',
                     'linkDetailsRewritten': '{$sArticle.linkDetailsRewrited}',
                     'articleName': '{$sArticle.articleName|escape:"javascript"}{if $sArticle.additionaltext} {$sArticle.additionaltext|escape:"javascript"}{/if}',
                     'imageTitle': '{$sArticle.image.description|escape:"javascript"}',

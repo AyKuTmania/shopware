@@ -50,8 +50,8 @@ Ext.define('Shopware.apps.Customer.view.customer_stream.ConditionPanel', {
     bodyPadding: '10 0 0',
 
     initComponent: function() {
-        var me = this;
-        var handlers = me.registerHandlers();
+        var me = this,
+            handlers = me.registerHandlers();
 
         me.handlers = handlers.sort(function compare(a, b) {
             return a.getLabel().localeCompare(b.getLabel());
@@ -84,7 +84,8 @@ Ext.define('Shopware.apps.Customer.view.customer_stream.ConditionPanel', {
             Ext.create('Shopware.apps.Customer.view.customer_stream.conditions.HasTotalOrderAmountCondition'),
             Ext.create('Shopware.apps.Customer.view.customer_stream.conditions.CustomerAttributeCondition'),
             Ext.create('Shopware.apps.Customer.view.customer_stream.conditions.SalutationCondition'),
-            Ext.create('Shopware.apps.Customer.view.customer_stream.conditions.SearchTermCondition')
+            Ext.create('Shopware.apps.Customer.view.customer_stream.conditions.SearchTermCondition'),
+            Ext.create('Shopware.apps.Customer.view.customer_stream.conditions.AccountModeCondition')
         ];
     },
 
@@ -120,14 +121,7 @@ Ext.define('Shopware.apps.Customer.view.customer_stream.ConditionPanel', {
             title: configuration.title,
             conditionClass: configuration.conditionClass,
             conditionField: panel,
-            items: [panel],
-            listeners: {
-                close: function() {
-                    Ext.defer(function() {
-                        me.fireEvent('condition-removed', this)
-                    }, 100);
-                }
-            }
+            items: [panel]
         });
     },
 
@@ -168,8 +162,8 @@ Ext.define('Shopware.apps.Customer.view.customer_stream.ConditionPanel', {
         var containers = [];
 
         for (var conditionClass in value) {
-            var items = value[conditionClass];
-            var handler = me.getHandler(conditionClass);
+            var items = value[conditionClass],
+                handler = me.getHandler(conditionClass);
 
             handler.load(conditionClass, items, function(configuration) {
                 if (!me.conditionExists(containers, configuration)) {

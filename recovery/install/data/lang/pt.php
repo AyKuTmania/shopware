@@ -58,7 +58,7 @@ return [
     Ficamos muito satisfeitos com a sua intenção de integrar a nossa Comunidade Shopware, uma rede mundial impressionante.
 </p>
 <p>
-    Fazemos um acompanhamento passo a passo ao longo de todo o processo de instalação. Caso tenha dúvidas, passe pelo nosso <a href="https://forum.shopware.com" target="_blank">fórum</a> ou contacte-nos telefonicamente através do <a href="tel:+492555928850">(+49) 2555 928850</a> ou por <a href="mailto:info@shopware.com">correio eletrónico</a>.
+    Fazemos um acompanhamento passo a passo ao longo de todo o processo de instalação. Caso tenha dúvidas, passe pelo nosso <a href="https://forum.shopware.com" target="_blank">fórum</a> ou contacte-nos telefonicamente através do <a href="tel:0080074676260">00 800 746 7626 0 (grátis)</a> ou por <a href="mailto:info@shopware.com">correio eletrónico</a>.
 </p>
 <p>
     <strong>Mãos à obra</strong>
@@ -73,7 +73,7 @@ EOT
     'requirements_tablefiles_colstatus' => 'Estado',
     'requirements_error' => '<h3 class="alert-heading">Atenção!</h3>Não estão satisfeitos todos os requisitos necessários para uma instalação correta',
     'requirements_success' => '<h3 class="alert-heading">Parabéns!</h3>Estão satisfeitos todos os requisitos para uma instalação correta',
-    'requirements_ioncube' => '<small><strong>* Hinweis:</strong> O software de encriptação ionCube não está instalado no seu sistema. Este só é necessário se, posteriormente, pretender instalar extensões encriptadas com o ionCube através da nossa <a href="https://store.shopware.com" target="_blank">Shopware Community Store</a>. Pode realizar a instalação do ionCube a qualquer momento.</small>',
+    'requirements_ioncube' => '<small><strong>* Nota:</strong> O software de encriptação ionCube não está instalado no seu sistema. Este só é necessário se, posteriormente, pretender instalar extensões encriptadas com o ionCube através da nossa <a href="https://store.shopware.com/en" target="_blank">Shopware Community Store</a>. Pode realizar a instalação do ionCube a qualquer momento.</small>',
     'requirements_php_info' => 'O seu servidor deve satisfazer os seguintes requisitos de sistema para que possa executar o Shopware',
     'requirements_system_colcheck' => 'Requisitos',
     'requirements_system_colrequired' => 'Necessário',
@@ -107,9 +107,9 @@ EOT
     'migration_update_success' => 'Base de dados importada com êxito!',
 
     'edition_header' => 'Já adquiriu a sua licença Shopware?',
-    'edition_info' => 'O Shopware está disponível na versão gratuita <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition </a> e nas <a href="https://de.shopware.com/versionen/" target="_blank">versões pagas Professional, Professional Plus e Enterprise</a>.',
-    'edition_ce' => 'Não, pretendo utilizar a versão gratuita <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition</a>.',
-    'edition_cm' => 'Sim, tenho uma licença paga Shopware (<a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus ou Enterprise</a>).',
+    'edition_info' => 'O Shopware está disponível na versão gratuita <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition </a> e nas <a href="https://en.shopware.com/pricing/" target="_blank">versões pagas Professional, Professional Plus e Enterprise</a>.',
+    'edition_ce' => 'Não, pretendo utilizar a versão gratuita <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition</a>.',
+    'edition_cm' => 'Sim, tenho uma licença paga Shopware (<a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus ou Enterprise</a>).',
     'edition_license' => 'Introduza aqui o código da sua licença. Este consta da sua conta Shopware, em "Licenças" &rarr; "Licenças de produtos" &rarr; "Detalhes/Descarregar":',
     'edition_license_error' => 'É necessária uma licença válida para a instalação de uma versão paga do Shopware.',
 
@@ -146,6 +146,6 @@ EOT
 </p>
 <p>
     Ficamos muitos satisfeitos em recebê-lo na nossa comunidade. Instalou o Shopware com êxito.
-<p>A sua loja está operacional. Caso esteja agora a começar a utilizar o Shopware, recomendamos a leitura do guia <a href="http://wiki.shopware.com/_detail_930.html" target="_blank">"Passos iniciais no Shopware"</a>. Caso esteja a entrar pela primeira vez no back-end da loja, terá a ajuda do nosso assistente de primeira execução para o guiar durante o processo.</p>
+<p>A sua loja está operacional. Caso esteja agora a começar a utilizar o Shopware, recomendamos a leitura do guia <a href="http://en.community.shopware.com/_detail_1195.html" target="_blank">"Passos iniciais no Shopware"</a>. Caso esteja a entrar pela primeira vez no back-end da loja, terá a ajuda do nosso assistente de primeira execução para o guiar durante o processo.</p>
 <p>Esperamos que se divirta na nossa nova loja online!</p>',
 ];

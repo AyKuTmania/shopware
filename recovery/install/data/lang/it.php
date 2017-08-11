@@ -58,7 +58,7 @@ return [
     Siamo lieti che tu voglia entrare a far parte della nostra grande Shopware Community mondiale.
 </p>
 <p>
-    Ti accompagniamo ora passo passo nel processo di installazione. Per qualsiasi domanda, consulta il nostro <a href="https://forum.shopware.com" target="_blank">Forum</a> o contattaci telefonicamente al numero <a href="tel:+492555928850">(+49) 2555 928850</a> o inviaci una <a href="mailto:info@shopware.com">e-mail</a>.
+    Ti accompagniamo ora passo passo nel processo di installazione. Per qualsiasi domanda, consulta il nostro <a href="https://forum.shopware.com" target="_blank">Forum</a> o contattaci telefonicamente al numero <a href="tel:0080074676260">00 800 746 7626 0 (gratis)</a> o inviaci una <a href="mailto:info@shopware.com">e-mail</a>.
 </p>
 <p>
     <strong>Si parte</strong>
@@ -73,7 +73,7 @@ EOT
     'requirements_tablefiles_colstatus' => 'Stato',
     'requirements_error' => '<h3 class="alert-heading">Attenzione!</h3>Non tutti i requisiti per l\'installazione sono soddisfatti',
     'requirements_success' => '<h3 class="alert-heading">Esito positivo!</h3>Tutti i requisiti per l\'installazione sono soddisfatti',
-    'requirements_ioncube' => '<small><strong>* Hinweis:</strong> In questo sistema non è installato il software di codifica ionCube. Questo software serve per installare successivamente espansioni del nostro <a href="https://store.shopware.com" target="_blank">Shopware Community Store</a> codificate con ionCube. L\'installazione di ionCube può essere effettuata in qualsiasi momento successivo.</small>',
+    'requirements_ioncube' => '<small><strong>* Nota:</strong> In questo sistema non è installato il software di codifica ionCube. Questo software serve per installare successivamente espansioni del nostro <a href="https://store.shopware.com/en" target="_blank">Shopware Community Store</a> codificate con ionCube. L\'installazione di ionCube può essere effettuata in qualsiasi momento successivo.</small>',
     'requirements_php_info' => 'Per consentire l\'utilizzo di Shopware, il tuo server deve soddisfare i requisiti di sistema seguenti.',
     'requirements_system_colcheck' => 'Requisito',
     'requirements_system_colrequired' => 'Obbligatorio',
@@ -83,7 +83,7 @@ EOT
     'requirements_hide_all' => '(nascondi tutto)',
 
     'license_agreement_header' => 'Condizioni di licenza utente finale ("EULA")',
-    'license_agreement_info' => 'Qui sono indicate le nostre condizioni di licenza che devono essere lette e accettate per portare a termine l\'installazione. Shopware Community Edition è soggetto a licenza AGPL, mentre i componenti dei plugin e il template sono soggetti a licenza  New BSD.',
+    'license_agreement_info' => 'Qui sono indicate le nostre condizioni di licenza che devono essere lette e accettate per portare a termine l\'installazione. Shopware Community Edition è soggetto a licenza AGPL, mentre i componenti dei plugin e il template sono soggetti a licenza New BSD.',
     'license_agreement_error' => 'Accetta le nostre condizioni di licenza',
     'license_agreement_checkbox' => 'Accetto le condizioni di licenza',
 
@@ -107,14 +107,14 @@ EOT
     'migration_update_success' => 'Importazione della banca dati riuscita!',
 
     'edition_header' => 'Hai acquistato una licenza Shopware?',
-    'edition_info' => 'Shopware è disponibile in una <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition </a> gratuita e nelle edizioni<a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus ed Enterprise</a>.',
-    'edition_ce' => 'No, desidero utilizzare una <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition</a> gratuita.',
-    'edition_cm' => 'Sì, ho una licenza Shopware a pagamento (<a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus o Enterprise</a>).',
+    'edition_info' => 'Shopware è disponibile in una <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition </a> gratuita e nelle edizioni<a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus ed Enterprise</a>.',
+    'edition_ce' => 'No, desidero utilizzare una <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition</a> gratuita.',
+    'edition_cm' => 'Sì, ho una licenza Shopware a pagamento (<a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus o Enterprise</a>).',
     'edition_license' => 'Immetti qui il tuo codice di licenza. Puoi trovarlo nel tuo account Shopware in "Licenze" &rarr; "Licenze prodotto" &rarr; "Dettagli / Download":',
     'edition_license_error' => 'Per l\'installazione di una versione Shopware a pagamento, è necessaria una licenza valida.',
 
     'configuration_header' => 'Configurazione base Shop',
-    'configuration_sconfig_text' => 'Quasi fatto! Per concludere l\'installazione, devi ancora definire soltanto alcune impostazioni base per il tuo Shop.  Ovviamente potrai modificare successivamente tutto quello che immetti qui.',
+    'configuration_sconfig_text' => 'Quasi fatto! Per concludere l\'installazione, devi ancora definire soltanto alcune impostazioni base per il tuo Shop. Ovviamente potrai modificare successivamente tutto quello che immetti qui.',
     'configuration_sconfig_name' => 'Nome del tuo Shop:',
     'configuration_sconfig_name_info' => 'Indica il nome del tuo Shop',
     'configuration_sconfig_mail' => 'Indirizzo e-mail dello Shop:',
@@ -146,6 +146,6 @@ EOT
 </p>
 <p>
     siamo lieti di darti il benvenuto nella nostra Community. Shopware è stato installato con successo.
-<p>Il tuo Shop ora è pronto all\'uso. Se sei nuovo in Shopware, ti suggeriamo di leggere la guida <a href="http://wiki.shopware.com/_detail_930.html" target="_blank">"Primi passi in Shopware"</a>. Se stai effettuando il primo accesso allo Shop Backend, la nostra procedura guidata "First Run" ti spiega i passaggi principali da compiere.</p>
+<p>Il tuo Shop ora è pronto all\'uso. Se sei nuovo in Shopware, ti suggeriamo di leggere la guida <a href="http://en.community.shopware.com/_detail_1195.html" target="_blank">"Primi passi in Shopware"</a>. Se stai effettuando il primo accesso allo Shop Backend, la nostra procedura guidata "First Run" ti spiega i passaggi principali da compiere.</p>
 <p>Buon divertimento con il tuo nuovo Onlineshop!</p>',
 ];

@@ -58,7 +58,7 @@ return [
     Nos alegramos de que quieras formar parte de la fantástica comunidad mundial de Shopware.
 </p>
 <p>
-    Te acompañaremos paso a paso por el proceso de instalación. Si tienes preguntas, echa un vistazo a nuestro <a href="https://forum.shopware.com" target="_blank">Foro</a>, llámanos al <a href="tel:+492555928850">(+49) 2555 928850</a> o envíanos un <a href="mailto:info@shopware.com">correo electrónico</a>.
+    Te acompañaremos paso a paso por el proceso de instalación. Si tienes preguntas, echa un vistazo a nuestro <a href="https://forum.shopware.com" target="_blank">Foro</a>, llámanos al <a href="tel:0080074676260">00 800 746 7626 0 (gratis)</a> o envíanos un <a href="mailto:info@shopware.com">correo electrónico</a>.
 </p>
 <p>
     <strong>Vamos allá</strong>
@@ -73,7 +73,7 @@ EOT
     'requirements_tablefiles_colstatus' => 'Estado',
     'requirements_error' => '<h3 class="alert-heading">¡Atención!</h3>No se cumplen todos los requisitos necesarios para una instalación correcta',
     'requirements_success' => '<h3 class="alert-heading">¡Felicidades!</h3>Se cumplen todos los requisitos necesarios para una instalación correcta',
-    'requirements_ioncube' => '<small><strong>* Hinweis:</strong> No tienes instalado el software de codificación ionCube en tu sistema. Este software solo es necesario si más tarde quieres instalar ampliaciones cifradas con ionCube a través de nuestra <a href="https://store.shopware.com" target="_blank">Shopware Community Store</a>. También puedes retomar la instalación de ionCube siempre que quieras.</small>',
+    'requirements_ioncube' => '<small><strong>* Nota:</strong> No tienes instalado el software de codificación ionCube en tu sistema. Este software solo es necesario si más tarde quieres instalar ampliaciones cifradas con ionCube a través de nuestra <a href="https://store.shopware.com/en" target="_blank">Shopware Community Store</a>. También puedes retomar la instalación de ionCube siempre que quieras.</small>',
     'requirements_php_info' => 'Tu servidor debe cumplir los siguientes requisitos del sistema para que Shopware sea ejecutable',
     'requirements_system_colcheck' => 'Requisito',
     'requirements_system_colrequired' => 'Obligatorio',
@@ -107,9 +107,9 @@ EOT
     'migration_update_success' => 'La base de datos se ha importado correctamente.',
 
     'edition_header' => '¿Has adquirido una licencia de Shopware?',
-    'edition_info' => 'Shopware está disponible en la versión gratuita <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition </a> y en las versiones de pago <a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus y Enterprise</a>.',
-    'edition_ce' => 'No, quiero utilizar la versión gratuita <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition</a>.',
-    'edition_cm' => 'Sí, tengo una licencia de Shopware de pago (<a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus o Enterprise</a>).',
+    'edition_info' => 'Shopware está disponible en la versión gratuita <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition </a> y en las versiones de pago <a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus y Enterprise</a>.',
+    'edition_ce' => 'No, quiero utilizar la versión gratuita <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition</a>.',
+    'edition_cm' => 'Sí, tengo una licencia de Shopware de pago (<a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus o Enterprise</a>).',
     'edition_license' => 'Entonces, registra aquí tu clave de licencia. La encontrarás en tu cuenta de Shopware en "Licencias" &rarr; "Licencias de productos" &rarr; "Detalles / Descargar":',
     'edition_license_error' => 'Para la instalación de una versión de Shopware de pago se requiere una licencia válida.',
 
@@ -146,6 +146,6 @@ EOT
 </p>
 <p>
     Nos complace poder darte la bienvenida a nuestra comunidad. Has instalado Shopware correctamente.
-<p>Ya puedes empezar a utilizar tu tienda. Si eres nuevo en Shopware, te recomendamos que leas la guía <a href="http://wiki.shopware.com/_detail_930.html" target="_blank">"Primeros pasos en Shopware"</a>. Cuando te registres por primera vez en el back-end de la tienda, nuestro asistente de instalación te guiará para que definas los ajustes básicos.</p>
+<p>Ya puedes empezar a utilizar tu tienda. Si eres nuevo en Shopware, te recomendamos que leas la guía <a href="http://en.community.shopware.com/_detail_1195.html" target="_blank">"Primeros pasos en Shopware"</a>. Cuando te registres por primera vez en el back-end de la tienda, nuestro asistente de instalación te guiará para que definas los ajustes básicos.</p>
 <p>¡Disfruta mucho de tu nueva tienda online!</p>',
 ];

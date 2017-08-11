@@ -22,14 +22,12 @@
  * our trademarks remain entirely with us.
  */
 
+use Shopware\Components\Migrations\AbstractMigration;
+
 class Migrations_Migration932 extends Shopware\Components\Migrations\AbstractMigration
 {
     public function up($modus)
     {
-        if ($modus == \Shopware\Components\Migrations\AbstractMigration::MODUS_UPDATE) {
-            return;
-        }
-
         $tags = implode("\n", [
             'widgets/lastArticles detail',
             'widgets/checkout checkout,slt',
@@ -40,6 +38,10 @@ class Migrations_Migration932 extends Shopware\Components\Migrations\AbstractMig
             "UPDATE `s_core_config_elements` SET `value` = '%s' WHERE `name` = 'noCacheControllers'",
             serialize($tags)
         ));
+
+        if ($modus == AbstractMigration::MODUS_INSTALL) {
+            return;
+        }
 
         $values = $this->connection->query(
             "SELECT configValues.*
@@ -54,11 +56,10 @@ class Migrations_Migration932 extends Shopware\Components\Migrations\AbstractMig
             $controllers = explode("\n", $controllers);
 
             foreach ($controllers as &$controller) {
-                if ($controller === 'widgets/checkout checkout') {
-                    $controller = 'widgets/checkout checkout,slt';
+                if (strpos($controller, 'widgets/checkout') !== false) {
+                    $controller .= ',slt';
                 }
             }
-
             $this->addSql(sprintf(
                 "UPDATE s_core_config_values SET value = '%s' WHERE id = " . $value['id'],
                 serialize(implode("\n", $controllers))

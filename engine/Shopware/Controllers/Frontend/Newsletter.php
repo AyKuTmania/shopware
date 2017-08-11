@@ -22,8 +22,6 @@
  * our trademarks remain entirely with us.
  */
 
-use Shopware\Components\Captcha\Exception\CaptchaNotFoundException;
-
 /**
  * Newsletter controller
  */
@@ -49,6 +47,7 @@ class Shopware_Controllers_Frontend_Newsletter extends Enlight_Controller_Action
     public function indexAction()
     {
         $this->View()->voteConfirmed = $this->isConfirmed();
+        $this->View()->assign('sUserLoggedIn', Shopware()->Modules()->Admin()->sCheckUser());
 
         if (isset($this->Request()->sUnsubscribe)) {
             $this->View()->sUnsubscribe = true;
@@ -74,12 +73,16 @@ class Shopware_Controllers_Frontend_Newsletter extends Enlight_Controller_Action
             return;
         }
 
-        $newsletterCaptcha = Shopware()->System()->_POST['newsletterCaptcha'];
-        if (isset($newsletterCaptcha) && ($newsletterCaptcha !== 'noCaptcha')) {
+        $config = $this->container->get('config');
+        $noCaptchaAfterLogin = $config->get('noCaptchaAfterLogin');
+        // redirect user if captcha is active and request is sent from the footer
+        if ($config->get('newsletterCaptcha') !== 'noCaptcha' &&
+            $this->Request()->getPost('redirect') !== null &&
+            !($noCaptchaAfterLogin && Shopware()->Modules()->Admin()->sCheckUser())) {
             return;
         }
 
-        if (empty(Shopware()->Config()->sOPTINNEWSLETTER) || $this->View()->voteConfirmed) {
+        if (empty($config->get('sOPTINNEWSLETTER')) || $this->View()->voteConfirmed) {
             $this->View()->sStatus = Shopware()->Modules()->Admin()->sNewsletterSubscription(Shopware()->System()->_POST['newsletter'], false);
             if ($this->View()->sStatus['code'] == 3) {
                 // Send mail to subscriber
@@ -114,6 +117,12 @@ class Shopware_Controllers_Frontend_Newsletter extends Enlight_Controller_Action
      */
     public function listingAction()
     {
+        if (strpos($this->Request()->getPathInfo(), '/newsletterListing') === 0) {
+            $this->redirect(['controller' => 'newsletter', 'action' => 'listing', 'module' => 'frontend'], ['code' => 301]);
+
+            return;
+        }
+
         $customergroups = $this->getCustomerGroups();
         $customergroups = Shopware()->Db()->quote($customergroups);
         $context = $this->container->get('shopware_storefront.context_service')->getShopContext();
@@ -145,7 +154,7 @@ class Shopware_Controllers_Frontend_Newsletter extends Enlight_Controller_Action
 
         $content = [];
         while ($row = $result->fetch()) {
-            $row['link'] = $this->Front()->Router()->assemble(['action' => 'detail', 'sID' => $row['id']]);
+            $row['link'] = $this->Front()->Router()->assemble(['action' => 'detail', 'sID' => $row['id'], 'p' => $page]);
             $content[] = $row;
         }
 
@@ -157,7 +166,7 @@ class Shopware_Controllers_Frontend_Newsletter extends Enlight_Controller_Action
                 $pages['numbers'][$i]['markup'] = false;
             }
             $pages['numbers'][$i]['value'] = $i;
-            $pages['numbers'][$i]['link'] = $this->Front()->Router()->assemble(['sViewport' => 'newsletter', 'action' => 'listing', 'sPage' => $i]);
+            $pages['numbers'][$i]['link'] = $this->Front()->Router()->assemble(['sViewport' => 'newsletter', 'action' => 'listing', 'p' => $i]);
         }
 
         $this->View()->sPage = $page;
@@ -195,14 +204,14 @@ class Shopware_Controllers_Frontend_Newsletter extends Enlight_Controller_Action
         }
 
         $this->View()->sContentItem = $content;
-        $this->View()->sBackLink = $this->Front()->Router()->assemble(['action' => 'listing']);
+        $this->View()->sBackLink = $this->Front()->Router()->assemble(['action' => 'listing']) . '?p=' . $this->Request()->getParam('p', 1);
     }
 
     /**
      * Send mail method
      *
-     * @param string $recipient
-     * @param string $template
+     * @param string      $recipient
+     * @param string      $template
      * @param bool|string $optin
      */
     protected function sendMail($recipient, $template, $optin = false)

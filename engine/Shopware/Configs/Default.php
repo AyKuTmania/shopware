@@ -200,4 +200,10 @@ return array_replace_recursive([
         'use_trans_sid' => 0,
         'locking' => false,
     ],
+    'template_security' => [
+        // @deprecated with 5.3, config switch will be removed with 5.4
+        'enabled' => true,
+        'php_modifiers' => include __DIR__ . '/smarty_functions.php',
+        'php_functions' => include __DIR__ . '/smarty_functions.php',
+    ],
 ], $customConfig);

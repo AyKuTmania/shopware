@@ -87,7 +87,7 @@ class Shopware_Controllers_Backend_Customer extends Shopware_Controllers_Backend
      */
     public function init()
     {
-        if (in_array($this->Request()->getActionName(), ['performOrderRedirect'])) {
+        if ($this->Request()->getActionName() === 'performOrderRedirect') {
             Shopware()->Plugins()->Backend()->Auth()->setNoAuth();
         }
         $currency = Shopware()->Db()->fetchRow(
@@ -220,8 +220,6 @@ class Shopware_Controllers_Backend_Customer extends Shopware_Controllers_Backend
     /**
      * Event listener method which fires when the detail page of a customer is loaded.
      * Returns an array of grouped order data to display them in a line chart.
-     *
-     * @return array Contains all customer orders group by year-month
      */
     public function getOrderChartAction()
     {
@@ -713,6 +711,7 @@ class Shopware_Controllers_Backend_Customer extends Shopware_Controllers_Backend
         $namespace = Shopware()->Container()->get('snippets')->getNamespace('frontend/salutation');
         $data['billing']['salutationSnippet'] = $namespace->get($data['billing']['salutation']);
         $data['shipping']['salutationSnippet'] = $namespace->get($data['shipping']['salutation']);
+        $data['customerStreamIds'] = $this->fetchCustomerStreams($id);
 
         return $data;
     }
@@ -754,7 +753,7 @@ class Shopware_Controllers_Backend_Customer extends Shopware_Controllers_Backend
             $params['paymentPreset'] = $params['paymentId'];
         }
 
-        if (empty($id) && empty($params['shipping'][0]['firstName']) && empty($params['shipping'][0]['lastName'])) {
+        if (empty($params['shipping'][0]['firstName']) && empty($params['shipping'][0]['lastName'])) {
             //shipping params are empty use the billing ones
             $params['shipping'][0] = $params['billing'][0];
         }
@@ -808,5 +807,26 @@ class Shopware_Controllers_Backend_Customer extends Shopware_Controllers_Backend
         $query->setMaxResults(1);
 
         return $query->getQuery()->getOneOrNullResult(\Doctrine\ORM\AbstractQuery::HYDRATE_OBJECT);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return string
+     */
+    private function fetchCustomerStreams($id)
+    {
+        $query = $this->container->get('dbal_connection')->createQueryBuilder();
+
+        $ids = $query->select(['mapping.stream_id'])
+            ->from('s_customer_streams_mapping', 'mapping')
+            ->innerJoin('mapping', 's_customer_streams', 'streams', 'streams.id = mapping.stream_id')
+            ->where('mapping.customer_id = :id')
+            ->addOrderBy('streams.name', 'ASC')
+            ->setParameter(':id', $id)
+            ->execute()
+            ->fetchAll(PDO::FETCH_COLUMN);
+
+        return implode('|', $ids);
     }
 }

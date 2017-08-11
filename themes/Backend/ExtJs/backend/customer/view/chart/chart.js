@@ -65,7 +65,20 @@ Ext.define('Shopware.apps.Customer.view.chart.Chart', {
 
     currencyRenderer: function(value) {
         value = value * 1;
-        return Ext.util.Format.currency(value, this.subApp.currencySign, 2, (this.subApp.currencyAtEnd == 1));
+        return Ext.util.Format.currency(value, this.getCurrency(), 2, (this.subApp.currencyAtEnd == 1));
+    },
+
+    getCurrency: function() {
+        var currency = this.subApp.currencySign;
+
+        switch (currency) {
+            case '&euro;':
+                return '&#8364;';
+            case '&pound;':
+                return '&#163;';
+            default:
+                return currency;
+        }
     },
 
     createAxes: function () {
@@ -74,7 +87,7 @@ Ext.define('Shopware.apps.Customer.view.chart.Chart', {
             type: 'Numeric',
             position: 'left',
             fields: me.getAxesFields(),
-            title: '{s name="amount"}{/s}',
+            title: '{s name="amount_axes"}{/s}',
             grid: true,
             minimum: 0,
             label: {
@@ -105,16 +118,18 @@ Ext.define('Shopware.apps.Customer.view.chart.Chart', {
 
         Ext.each(me.getFields(), function(item) {
             if (item.hasOwnProperty('title')) {
-                series.push(me.createLineSeries(item.name, item.title));
+                series.push(me.createLineSeries(item.name, item.title, item.currency));
             } else {
-                series.push(me.createLineSeries(item.name, item.name));
+                series.push(me.createLineSeries('stream_' + item.id, item.name, item.currency));
             }
         });
 
         return series;
     },
 
-    createLineSeries: function(field, title) {
+    createLineSeries: function(field, title, currency) {
+        var me = this;
+
         return {
             type: 'line',
             axis: 'left',
@@ -134,10 +149,15 @@ Ext.define('Shopware.apps.Customer.view.chart.Chart', {
                 highlight: { size: 7, radius: 7 },
                 renderer: function (storeItem) {
                     var value = storeItem.get(this.lineField);
+
+                    if (currency) {
+                        value = me.currencyRenderer(value);
+                    }
+
                     this.setTitle(
                         '<div class="customer-stream-chart-tip">' +
                             '<span class="customer-stream-chart-tip-label">' + this.fieldTitle + ':</span>&nbsp;'+
-                            '<span class="customer-stream-chart-tip-amount">' + me.currencyRenderer(value) + '</span>' +
+                            '<span class="customer-stream-chart-tip-amount">' + value + '</span>' +
                         '</div>'
                     );
                 }

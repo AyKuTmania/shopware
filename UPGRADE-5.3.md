@@ -4,7 +4,7 @@ This changelog references changes done in Shopware 5.3 patch versions.
 
 ## 5.3.0
 
-[View all changes from v5.2.23...v5.3.0](https://github.com/shopware/shopware/compare/v5.2.23...v5.3.0)
+[View all changes from v5.2.27...v5.3.0](https://github.com/shopware/shopware/compare/v5.2.27...v5.3.0)
 
 ### Additions
 
@@ -79,7 +79,7 @@ This changelog references changes done in Shopware 5.3 patch versions.
 * Added template switch for `listing/index.tpl` to `listing/customer_stream.tpl` in case that the category contains a shopping world which is restricted to customer streams
 * Added database column `s_emarketing_vouchers.customer_stream_ids` to restrict vouchers to customer streams.
 * Added database column `s_emotion.customer_stream_ids` to restrict shopping worlds to customer streams.
-* Added database table `s_customer_streams` for a list of all existing streams (`Shopware\Models\Customer\CustomerStream`)
+* Added database table `s_customer_streams` for a list of all existing streams (`Shopware\Models\CustomerStream\CustomerStream`)
 * Added database table `s_customer_search_index` for an fast customer search
 * Added database table `s_customer_streams_mapping` for mappings between customer and assigned streams
 * Added bundle `Shopware\Bundle\CustomerSearchBundle` which defines how customers can be searched
@@ -89,7 +89,7 @@ This changelog references changes done in Shopware 5.3 patch versions.
 * Added flag `$hasCustomerStreamEmotion` in `frontend/home/index.tpl` to switch between emotions restricted to customer streams and those which are unrestricted
 * Added route `/frontend/listing/layout` which loads the category page layout for customer streams. This route is called using `{action ...}` in case that the category contains an emotion with customer streams
 * Added route `/frontend/listing/listing` which loads the category product listing. This route is called using `{action ...}` in case that the category contains an emotion with customer streams
-* Added entity `Shopware\Models\Customer\CustomerStream` for attribute single and multi selection.
+* Added entity `Shopware\Models\CustomerStream\CustomerStream` for attribute single and multi selection.
 * Added translations for attribute labels. See below for more information.
 * Added database structure for new emotion preset feature:
     * `s_emotion_presets` - contains all installed presets
@@ -128,6 +128,36 @@ This changelog references changes done in Shopware 5.3 patch versions.
 * Added `Shopware\Bundle\SearchBundleDBAL\VariantHelper` which joins all variants for dbal search
 * Added smarty blocks `frontend_checkout_shipping_payment_core_button_top` and `frontend_checkout_shipping_payment_core_button_top` for shipping
 * Added new Interface for facet result template switch `Shopware\Bundle\SearchBundle\TemplateSwitchable`
+* Added new service `Shopware\Bundle\MediaBundle\CdnOptimizerService` for optimizing remote images on CDNs
+* Added option to control target attribute for external links in categories
+    * Added database column `s_category.external_target`
+    * Added property `externalTarget` in `Shopware\Bundle\StoreFrontBundle\Struct\Category`
+    * Added property `externalTarget` in `Shopware\Models\Category\Category`
+    * Added property `externalTarget` in `Shopware\themes\Backend\ExtJs\backend\category\model\detail`
+    * Added translations for field labels and combo box options
+* Added `selecttree` and `combotree` config elements for plugins
+* Added backend configuration option for the newsletter to configure if a captcha is required to subscribe to the newsletter
+* Added two new Smarty blocks for menu and menu item overwrite possibility to the account sidebar
+* Added LiveReload mode for the default grunt which reloads your browser window automatically after the grunt compilation was successful
+* Added `nofollow` attribute to all links in the block `frontend_account_menu` since these links are now visible in the frontend if the account dropdown menu is activated
+* Added `type` parameter to `Shopware_Controllers_Widgets_Listing::productSliderAction` and `Shopware_Controllers_Widgets_Listing::productsAction` which allows to load product sliders or product boxes.
+* Added new search builder class `Shopware\Components\Model\SearchBuilder`
+* Added new search builder as __construct parameter in `Shopware\Bundle\AttributeBundle\Repository\Searcher\GenericSearcher`
+* Added new `FunctionNode` for IF-ELSE statements in ORM query builder
+* Added `/address` to robots.txt 
+* Added snippet `DetailBuyActionAddName` in `snippets/frontend/detail/buy.ini`
+* Added `Shopware\Components\Template\Security` class for all requests.
+* Added whitelist for allowed php functions and php modifiers in smarty
+    * template_security.php_modifiers
+    * template_security.php_functions
+* Added new option `showPagingToolbar` to `Shopware.DragAndDropSelector.js`. Default is `false`.
+* Added proper expandability to the manual 'SEO URL generation' and the 'HttpCache Warmer' window in `themes/Backend/ExtJs/backend/performance/view/main/multi_request_tasks.js`
+* Added new filter event `Shopware_Controllers_Performance_filterCounts` to `engine/Shopware/Controllers/Backend/Performance.php` to add custom count of the HttpCache warmer URLs
+* Added new filter event `Shopware_Controllers_Seo_filterCounts` to `engine/Shopware/Plugins/Default/Core/RebuildIndex/Controllers/Seo.php` to add a custom SEO URL count
+* Added new notify event `Shopware_CronJob_RefreshSeoIndex_CreateRewriteTable` to `engine/Shopware/Plugins/Default/Core/RebuildIndex/Bootstrap.php` to be notified when the SEO URLs are generated via cronjob
+* Added new column `do_not_split` to table `s_search_fields`. Activate to store the values of this field as given into the search index. If not active, the default behaviour is used
+* Added new service `shopware_storefront.price_calculator` which calculates the product price. Was formerly a private method in `shopware_storefront.price_calculation_service`
+* Added service `shopware_media.extension_mapping` to provide a customizable whitelist for media file extensions and their type mapping
 
 ### Changes
 
@@ -178,6 +208,24 @@ This changelog references changes done in Shopware 5.3 patch versions.
 * Refactored backend customer module. Please take a look into the different template files to see what has changed.
 * Changed parameter order of `Shopware\Bundle\SearchBundle\FacetResult\RangeFacetResult::__construct()` and added `$suffix` and `$digits`.
 * Changed selection fields in the voucher module. `shopware-form-field-single-selection` is now used instead of the native `combobox` xtype and `shopware-form-field-product-grid` is used for article restriction.
+* Changed templates to support custom targets for category links
+    * `themes/Frontend/Bare/frontend/index/main-navigation.tpl`
+    * `themes/Frontend/Bare/frontend/index/sidebar-categories.tpl`
+    * `themes/Frontend/Bare/frontend/sitemap/index.tpl`
+    * `themes/Frontend/Bare/frontend/sitemap/recurse.tpl`
+    * `engine/Shopware/Plugins/Default/Frontend/AdvancedMenu/Views/frontend/advanced_menu/index.tpl`
+* Changed `engine\Shopware\Bundle\StoreFrontBundle\Gateway\DBAL\Hydrator\CategoryHydrator` to support the custom target property
+* Changed `engine\Shopware\Bundle\StoreFrontBundle\Gateway\DBAL\FieldHelper` to support the custom target property
+* Changed `engine\Shopware\Components\Compatibility\LegacyStructConverter` to support the custom target property
+* Changed return values so the array keys are now the respective country/state IDs in `\Shopware\Bundle\StoreFrontBundle\Service\Core\LocationService::getCountries`
+* Moved the removal of the whole cache folder after the removal of the `.js` and `.css` files for better handling of huge caches in the `clear_cache.sh` script
+* Changed `Shopware_Controllers_Widgets_Listing::streamSliderAction` to `Shopware_Controllers_Widgets_Listing::streamAction`
+* Changed `Shopware_Controllers_Widgets_Listing::productSliderAction` to `Shopware_Controllers_Widgets_Listing::productsAction`
+* Changed snippet `DetailBuyActionAdd` in `snippets/frontend/detail/buy.ini`, it now contains <span> tags
+* Changed snippet `ListingBuyActionAdd` in `snippets/frontend/listing/box_article.ini`, it now contains another <span> tag
+* Merged `account/sidebar.tpl` and `account/sidebar_personal.tpl`
+* Moved snippets from `account/sidebar_personal.ini` to `account/sidebar.ini`
+* Changed `Enlight_Hook_ProxyFactory` to use `ocramius/proxy-manager` for generating proxy classes
 
 ### Removals
 
@@ -326,6 +374,9 @@ This changelog references changes done in Shopware 5.3 patch versions.
 * Removed `modernizr` option `CSS Transforms`
 * Removed `modernizr` option `CSS Transforms 3D`
 * Removed `modernizr` option `CSS Transitions`
+* Removed event `Shopware_Plugins_HttpCache_ShouldNotCache`
+* Removed `eval` from block `frontend_forms_index_headline` in `index.tpl` of `themes\Frontend\Bare\frontend\forms` for `$sSupport.text`
+* Removed cleanupPlugins from `Shopware\Bundle\PluginInstallerBundle\Service`
 
 ### Deprecations
 

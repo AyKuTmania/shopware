@@ -58,7 +58,7 @@ return [
     We are delighted you want to join our fantastic, global Shopware community.
 </p>
 <p>
-    We will now take you through the installation process step by step. If you have any queries, simply take a look in our <a href="https://forum.shopware.com" target="_blank">forum</a>, give us a call on <a href="tel:+492555928850">(+49) 2555 928850</a> or send us an <a href="mailto:info@shopware.com">e-mail</a>.
+    We will now take you through the installation process step by step. If you have any queries, simply take a look in our <a href="https://forum.shopware.com" target="_blank">forum</a>, give us a call on <a href="tel:0080074676260">00 800 746 7626 0 (free of charge)</a> or send us an <a href="mailto:info@shopware.com">e-mail</a>.
 </p>
 <p>
     <strong>Let's get started</strong>
@@ -73,7 +73,7 @@ EOT
     'requirements_tablefiles_colstatus' => 'Status',
     'requirements_error' => '<h3 class="alert-heading">Warning!</h3>Not all of the requirements for successful installation have been met',
     'requirements_success' => '<h3 class="alert-heading">Congratulations!</h3>All of the requirements for successful installation have been met',
-    'requirements_ioncube' => '<small><strong>* Hinweis:</strong> The ionCube encoding software is not installed on your system. This will only be needed if later on you want to install extensions via our <a href="https://store.shopware.com" target="_blank">Shopware Community Store</a> that are encrypted with ionCube. You can install ionCube at any time.</small>',
+    'requirements_ioncube' => '<small><strong>* Hint:</strong> The ionCube encoding software is not installed on your system. This will only be needed if later on you want to install extensions via our <a href="https://store.shopware.com/en" target="_blank">Shopware Community Store</a> that are encrypted with ionCube. You can install ionCube at any time.</small>',
     'requirements_php_info' => 'Your server must meet the following system requirements in order to run Shopware',
     'requirements_system_colcheck' => 'Requirement',
     'requirements_system_colrequired' => 'Required',
@@ -107,9 +107,9 @@ EOT
     'migration_update_success' => 'Database successfully imported!',
 
     'edition_header' => 'Have you purchased a Shopware licence?',
-    'edition_info' => 'Shopware is available as a free <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition</a>, and is also available as <a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus or Enterprise Edition</a>, for a one-time fee.',
-    'edition_ce' => 'No, I would like to use the free <a href="https://de.shopware.com/versionen/" target="_blank">Community Edition</a>.',
-    'edition_cm' => 'Yes, I have purchased a Shopware licence (<a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus or Enterprise</a>).',
+    'edition_info' => 'Shopware is available as a free <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition</a>, and is also available as <a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus or Enterprise Edition</a>, for a one-time fee.',
+    'edition_ce' => 'No, I would like to use the free <a href="https://en.shopware.com/pricing/" target="_blank">Community Edition</a>.',
+    'edition_cm' => 'Yes, I have purchased a Shopware licence (<a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus or Enterprise</a>).',
     'edition_license' => 'Please enter your licence key here. You can find it in your Shopware account under "Licences" &rarr; "Product licences" &rarr; "Details / Download":',
     'edition_license_error' => 'A valid licence is required in order to install a fee-based Shopware version.',
 
@@ -146,6 +146,6 @@ EOT
 </p>
 <p>
     We are delighted to welcome you to our community. You have successfully installed Shopware.
-<p>Your shop is now ready to use. If you are new to Shopware, we recommend that you take a look at the guide <a href="http://wiki.shopware.com/_detail_930.html" target="_blank">"First steps in Shopware"</a>. When you log in to the shop backend for the first time, our "First Run Wizard" will take you through some further basic settings.</p>
+<p>Your shop is now ready to use. If you are new to Shopware, we recommend that you take a look at the guide <a href="http://en.community.shopware.com/_detail_1195.html" target="_blank">"First steps in Shopware"</a>. When you log in to the shop backend for the first time, our "First Run Wizard" will take you through some further basic settings.</p>
 <p>Enjoy your new online shop!</p>',
 ];

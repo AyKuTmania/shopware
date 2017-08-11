@@ -262,6 +262,7 @@ class LegacyStructConverter
             'blog' => $category->isBlog(),
             'path' => $categoryPath,
             'external' => $category->getExternalLink(),
+            'externalTarget' => $category->getExternalTarget(),
             'hideFilter' => !$category->displayFacets(),
             'hideTop' => !$category->displayInNavigation(),
             'changed' => null,
@@ -344,6 +345,9 @@ class LegacyStructConverter
             '?sViewport=basket&sAdd=' . $promotion['ordernumber'];
 
         $promotion['linkDetails'] = $this->config->get('baseFile') .
+            '?sViewport=detail&sArticle=' . $promotion['articleID'];
+
+        $promotion['linkVariant'] = $this->config->get('baseFile') .
             '?sViewport=detail&sArticle=' . $promotion['articleID'] . '&number=' . $promotion['ordernumber'];
 
         return $this->eventManager->filter('Legacy_Struct_Converter_Convert_List_Product', $promotion, [

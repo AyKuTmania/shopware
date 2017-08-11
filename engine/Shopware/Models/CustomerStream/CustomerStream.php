@@ -22,10 +22,11 @@
  * our trademarks remain entirely with us.
  */
 
-namespace Shopware\Models\Customer;
+namespace Shopware\Models\CustomerStream;
 
 use Doctrine\ORM\Mapping as ORM;
 use Shopware\Components\Model\ModelEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="s_customer_streams")
@@ -33,6 +34,14 @@ use Shopware\Components\Model\ModelEntity;
  */
 class CustomerStream extends ModelEntity
 {
+    /**
+     * INVERSE SIDE
+     *
+     * @var \Shopware\Models\Attribute\CustomerStream
+     * @ORM\OneToOne(targetEntity="Shopware\Models\Attribute\CustomerStream", mappedBy="customerStream", orphanRemoval=true, cascade={"persist"})
+     */
+    protected $attribute;
+
     /**
      * @var int
      *
@@ -44,7 +53,7 @@ class CustomerStream extends ModelEntity
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank
      * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
@@ -57,10 +66,23 @@ class CustomerStream extends ModelEntity
     private $description;
 
     /**
-     * @var array
+     * @var string
      * @ORM\Column(name="conditions", type="string", nullable=true)
      */
     private $conditions;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="static", type="boolean", nullable=false)
+     */
+    private $static = false;
+
+    /**
+     * @var \DateTime
+     * @Assert\DateTime
+     * @ORM\Column(name="freeze_up", type="datetime", nullable=true)
+     */
+    private $freezeUp;
 
     /**
      * @return int
@@ -103,7 +125,7 @@ class CustomerStream extends ModelEntity
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getConditions()
     {
@@ -111,10 +133,45 @@ class CustomerStream extends ModelEntity
     }
 
     /**
-     * @param array $conditions
+     * @param string $conditions
      */
     public function setConditions($conditions)
     {
         $this->conditions = $conditions;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFreezeUp()
+    {
+        return $this->freezeUp;
+    }
+
+    /**
+     * @param $freezeUp string|\DateTime
+     */
+    public function setFreezeUp($freezeUp)
+    {
+        if (is_string($freezeUp)) {
+            $freezeUp = new \DateTime($freezeUp);
+        }
+        $this->freezeUp = $freezeUp;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStatic()
+    {
+        return $this->static;
+    }
+
+    /**
+     * @param $static bool
+     */
+    public function setStatic($static)
+    {
+        $this->static = $static;
     }
 }

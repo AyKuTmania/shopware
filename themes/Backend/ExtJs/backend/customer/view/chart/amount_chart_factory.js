@@ -35,12 +35,12 @@ Ext.define('Shopware.apps.Customer.view.chart.AmountChartFactory', {
         var fields = [];
         var modelFields = [];
 
-        streamStore.each(function (item) {
-            fields.push({ name: item.get('name') });
-            modelFields.push({ name: item.get('name'), type: 'float' });
+        streamStore.each(function (item, id) {
+            fields.push({ id: item.get('id'), name: item.get('name'), currency: true });
+            modelFields.push({ id: id, name: 'stream_' + item.get('id'), type: 'float' });
         });
 
-        fields.push({ name: 'unassigned', title: '{s name="unassigned_stream"}{/s}' });
+        fields.push({ name: 'unassigned', title: '{s name="unassigned_stream"}{/s}', currency: true });
         modelFields.push({ name: 'unassigned', type: 'float' });
         modelFields.push({ name: 'yearMonth', type: 'string' });
 
@@ -62,6 +62,7 @@ Ext.define('Shopware.apps.Customer.view.chart.AmountChartFactory', {
                         return fields;
                     }
                 });
+
                 callback(chart);
             }
         });

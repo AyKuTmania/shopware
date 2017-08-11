@@ -152,7 +152,8 @@ class Shopware_Plugins_Core_HttpCache_Bootstrap extends Shopware_Components_Plug
     {
         return new CacheControl(
             $this->get('session'),
-            $this->Config()
+            $this->Config(),
+            $this->get('events')
         );
     }
 
@@ -368,20 +369,6 @@ class Shopware_Plugins_Core_HttpCache_Bootstrap extends Shopware_Components_Plug
 
         $this->setNoCacheCookie();
 
-        /*
-         * Emits Shopware_Plugins_HttpCache_ShouldNotCache Event
-         */
-        if (Shopware()->Events()->notifyUntil(
-            // deprecated since SW 4.3, will be removed in SW 5.0
-            'Shopware_Plugins_HttpCache_ShouldNotCache',
-            [
-                'subject' => $this,
-                'action' => $this->action,
-            ]
-        )) {
-            return;
-        }
-
         $this->setCacheHeaders();
     }
 
@@ -550,8 +537,7 @@ class Shopware_Plugins_Core_HttpCache_Bootstrap extends Shopware_Components_Plug
                 'nocache',
                 implode(', ', $newCacheTags),
                 0,
-                $this->request->getBasePath() . '/',
-                ($this->request->getHttpHost() == 'localhost') ? null : $this->request->getHttpHost()
+                $this->request->getBasePath() . '/'
             );
         }
     }

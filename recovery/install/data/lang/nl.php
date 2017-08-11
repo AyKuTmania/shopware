@@ -58,7 +58,7 @@ return [
     We vinden het ontzettend fijn dat je je bij onze geweldige wereldwijde Shopware-community wilt aansluiten.
 </p>
 <p>
-    We begeleiden je nu stapsgewijs door het installatieproces. Mocht je vragen hebben, kijk dan eens op ons <a href="https://forum.shopware.com" target="_blank">forum</a>, neem telefonische contact met ons op via <a href="tel:+492555928850">(+49) 2555 928850</a> of stuur ons een <a href="mailto:info@shopware.com">e-mail</a>.
+    We begeleiden je nu stapsgewijs door het installatieproces. Mocht je vragen hebben, kijk dan eens op ons <a href="https://forum.shopware.com" target="_blank">forum</a>, neem telefonische contact met ons op via <a href="tel:0080074676260">00 800 746 7626 0 (gratis)</a> of stuur ons een <a href="mailto:info@shopware.com">e-mail</a>.
 </p>
 <p>
     <strong>Daar gaan we</strong>
@@ -73,7 +73,7 @@ EOT
     'requirements_tablefiles_colstatus' => 'Status',
     'requirements_error' => '<h3 class="alert-heading">Let op!</h3>Er is niet aan alle vereisten voor een geslaagde installatie voldaan',
     'requirements_success' => '<h3 class="alert-heading">Gefeliciteerd</h3>Er is aan alle vereisten voor een geslaagde installatie voldaan',
-    'requirements_ioncube' => '<small><strong>* Hinweis:</strong> De coderingssoftware ionCube is niet op jouw systeem geïnstalleerd. Deze software is alleen vereist als je later via onze <a href="https://store.shopware.com" target="_blank">Shopware Community Store</a> uitbreidingen wilt installeren die met ionCube versleuteld zijn. Je kunt ionCube altijd later nog installeren.</small>',
+    'requirements_ioncube' => '<small><strong>* Opmerking:</strong> De coderingssoftware ionCube is niet op jouw systeem geïnstalleerd. Deze software is alleen vereist als je later via onze <a href="https://store.shopware.com/en" target="_blank">Shopware Community Store</a> uitbreidingen wilt installeren die met ionCube versleuteld zijn. Je kunt ionCube altijd later nog installeren.</small>',
     'requirements_php_info' => 'Je server moet aan de volgende systeemvereisten voldoen om Shopware te kunnen gebruiken',
     'requirements_system_colcheck' => 'Vereiste',
     'requirements_system_colrequired' => 'Vereist',
@@ -107,9 +107,9 @@ EOT
     'migration_update_success' => 'Database is geïmporteerd!',
 
     'edition_header' => 'Heb je een Shopware-licentie gekocht?',
-    'edition_info' => 'Shopware is verkrijgbaar als gratis <a href="https://de.shopware.com/versionen/" target="_blank">Community-versie</a> en als betaalde <a href="https://de.shopware.com/versionen/" target="_blank">Professional-, Professional Plus- en Enterprise-versie</a>.',
-    'edition_ce' => 'Nee, ik wil de gratis <a href="https://de.shopware.com/versionen/" target="_blank">Community-versie</a> gebruiken.',
-    'edition_cm' => 'Ja, ik heb een betaalde Shopware-licentie (<a href="https://de.shopware.com/versionen/" target="_blank">Professional, Professional Plus of Enterprise</a>).',
+    'edition_info' => 'Shopware is verkrijgbaar als gratis <a href="https://en.shopware.com/pricing/" target="_blank">Community-versie</a> en als betaalde <a href="https://en.shopware.com/pricing/" target="_blank">Professional-, Professional Plus- en Enterprise-versie</a>.',
+    'edition_ce' => 'Nee, ik wil de gratis <a href="https://en.shopware.com/pricing/" target="_blank">Community-versie</a> gebruiken.',
+    'edition_cm' => 'Ja, ik heb een betaalde Shopware-licentie (<a href="https://en.shopware.com/pricing/" target="_blank">Professional, Professional Plus of Enterprise</a>).',
     'edition_license' => 'Voer dan hier je licentiesleutel in. Deze sleutel staat in je Shopware-account onder "Licenties" &rarr; "Productlicenties" &rarr; "Details/downloaden":',
     'edition_license_error' => 'Er is een geldige licentie vereist om een betaalde Shopware-versie te installeren.',
 
@@ -146,6 +146,6 @@ EOT
 </p>
 <p>
     Fijn dat je je bij onze community hebt aangesloten. Je hebt Shopware geïnstalleerd.
-<p>Je winkel is nu gebruiksklaar. Als je Shopware nog niet eerder hebt gebruikt, raden we je aan de gids <a href="http://wiki.shopware.com/_detail_930.html" target="_blank">"Eerste stappen in Shopware"</a> eens door te lezen. Wanneer je je voor het eerst bij de Shop-backend aanmeldt, leidt onze "First Run Wizard" je verder door de basisinrichting.</p>
+<p>Je winkel is nu gebruiksklaar. Als je Shopware nog niet eerder hebt gebruikt, raden we je aan de gids <a href="http://en.community.shopware.com/_detail_1195.html" target="_blank">"Eerste stappen in Shopware"</a> eens door te lezen. Wanneer je je voor het eerst bij de Shop-backend aanmeldt, leidt onze "First Run Wizard" je verder door de basisinrichting.</p>
 <p>Veel plezier met je nieuwe online winkel!</p>',
 ];

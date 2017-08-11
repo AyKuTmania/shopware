@@ -58,12 +58,8 @@ class Shopware_Controllers_Frontend_Account extends Enlight_Controller_Action
     public function preDispatch()
     {
         $this->View()->setScope(Enlight_Template_Manager::SCOPE_PARENT);
-        if (!in_array($this->Request()->getActionName(), ['login', 'logout', 'password', 'resetPassword'])
-            && !$this->admin->sCheckUser()) {
-            return $this->forward('index', 'register', 'frontend', [
-                'sTarget' => $this->Request()->getControllerName(),
-                'sTargetAction' => $this->Request()->getActionName(),
-            ]);
+        if ($this->shouldForwardToRegister()) {
+            return $this->forward('index', 'register', 'frontend', $this->getForwardParameters());
         }
         $userData = $this->admin->sGetUserData();
 
@@ -73,8 +69,14 @@ class Shopware_Controllers_Frontend_Account extends Enlight_Controller_Action
         $this->View()->assign('activeBillingAddressId', $activeBillingAddressId);
         $this->View()->assign('activeShippingAddressId', $activeShippingAddressId);
         $this->View()->assign('sUserData', $userData);
+        $this->View()->assign('userInfo', $this->get('shopware_account.store_front_greeting_service')->fetch());
         $this->View()->assign('sUserLoggedIn', $this->admin->sCheckUser());
         $this->View()->assign('sAction', $this->Request()->getActionName());
+
+        if ($this->isOneTimeAccount()) {
+            $this->logoutAction();
+            $this->redirect(['controller' => 'register']);
+        }
     }
 
     /**
@@ -82,14 +84,6 @@ class Shopware_Controllers_Frontend_Account extends Enlight_Controller_Action
      */
     public function indexAction()
     {
-        if (
-            $this->View()->sUserData['additional']['user']['accountmode'] == 1
-        ) {
-            $this->logoutAction();
-
-            return $this->redirect(['controller' => 'register']);
-        }
-
         if ($this->Request()->getParam('success')) {
             $this->View()->sSuccessAction = $this->Request()->getParam('success');
         }
@@ -638,6 +632,7 @@ class Shopware_Controllers_Frontend_Account extends Enlight_Controller_Action
 
         if ($form->isValid()) {
             $this->customerService->update($customer);
+            $this->container->get('session')->offsetSet('userInfo', null);
             $this->redirect(['controller' => 'account', 'action' => 'profile', 'success' => true, 'section' => 'profile']);
 
             return;
@@ -662,7 +657,7 @@ class Shopware_Controllers_Frontend_Account extends Enlight_Controller_Action
         if ($form->isValid()) {
             $this->customerService->update($customer);
             $this->get('session')->offsetSet('sUserMail', $customer->getEmail());
-
+            $this->get('session')->offsetSet('userInfo', null);
             $this->redirect(['controller' => 'account', 'action' => 'profile', 'success' => true, 'section' => 'email']);
 
             return;
@@ -782,5 +777,41 @@ class Shopware_Controllers_Frontend_Account extends Enlight_Controller_Action
         }
 
         return $customer;
+    }
+
+    /**
+     * @return bool
+     */
+    private function shouldForwardToRegister()
+    {
+        return !in_array($this->Request()->getActionName(), ['login', 'logout', 'password', 'resetPassword'])
+            && !$this->admin->sCheckUser();
+    }
+
+    /**
+     * @return array
+     */
+    private function getForwardParameters()
+    {
+        if (!$this->Request()->getParam('sTarget') && !$this->Request()->getParam('sTargetAction')) {
+            return [
+                'sTarget' => $this->Request()->getControllerName(),
+                'sTargetAction' => $this->Request()->getActionName(),
+            ];
+        }
+
+        return [
+            'sTarget' => $this->Request()->getParam('sTarget'),
+            'sTargetAction' => $this->Request()->getParam('sTargetAction'),
+        ];
+    }
+
+    /**
+     * @return bool
+     */
+    private function isOneTimeAccount()
+    {
+        return $this->container->get('session')->offsetGet('sOneTimeAccount')
+            || $this->View()->sUserData['additional']['user']['accountmode'] == 1;
     }
 }

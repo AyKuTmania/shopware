@@ -44,7 +44,7 @@
         }, ['xs', 's'])
 
         // Collapse panel
-        .addPlugin('#new-customer-action', 'swCollapsePanel', ['xs', 's'])
+        .addPlugin('#new-customer-action, .registration--menu-entry', 'swCollapsePanel', ['xs', 's'])
 
         // Image slider
         .addPlugin('*[data-image-slider="true"]', 'swImageSlider', { touchControls: true })
@@ -119,6 +119,7 @@
         .addPlugin('*[data-address-editor="true"]', 'swAddressEditor')
         .addPlugin('*[data-cookie-permission="true"]', 'swCookiePermission')
         .addPlugin('.navigation--entry.entry--account.with-slt', 'swDropdownMenu', [ 'm', 'l', 'xl' ])
+        .addPlugin('*[data-storage-field="true"]', 'swStorageField')
     ;
 
     $(function($) {
@@ -214,11 +215,5 @@
 
         $.subscribe('plugin/swAddArticle/onAddArticle', cartRefresh);
         $.subscribe('plugin/swCollapseCart/onRemoveArticleFinished', cartRefresh);
-
-        $('.is--ctl-detail .reset--configuration').on('click', function () {
-            $.loadingIndicator.open({
-                closeOnClick: false
-            });
-        });
     });
 })(jQuery, window);
