@@ -118,21 +118,15 @@ class sRewriteTable
     private $shopPageService;
 
     /**
-     * @var Shopware_Components_Translation
-     */
-    private $translationComponent;
-
-    /**
      * @param Enlight_Components_Db_Adapter_Pdo_Mysql $db
-     * @param Shopware_Components_Config              $config
-     * @param ModelManager                            $modelManager
-     * @param sSystem                                 $systemModule
-     * @param Enlight_Template_Manager                $template
-     * @param Shopware_Components_Modules             $moduleManager
-     * @param SlugInterface                           $slug
-     * @param ContextServiceInterface                 $contextService
-     * @param ShopPageServiceInterface                $shopPageService
-     * @param Shopware_Components_Translation         $translationComponent
+     * @param Shopware_Components_Config $config
+     * @param ModelManager $modelManager
+     * @param sSystem $systemModule
+     * @param Enlight_Template_Manager $template
+     * @param Shopware_Components_Modules $moduleManager
+     * @param SlugInterface $slug
+     * @param ContextServiceInterface $contextService
+     * @param ShopPageServiceInterface $shopPageService
      */
     public function __construct(
         Enlight_Components_Db_Adapter_Pdo_Mysql $db = null,
@@ -143,8 +137,7 @@ class sRewriteTable
         Shopware_Components_Modules $moduleManager = null,
         SlugInterface $slug = null,
         ContextServiceInterface $contextService = null,
-        ShopPageServiceInterface $shopPageService = null,
-        Shopware_Components_Translation $translationComponent = null
+        ShopPageServiceInterface $shopPageService = null
     ) {
         $this->db = $db ?: Shopware()->Db();
         $this->config = $config ?: Shopware()->Config();
@@ -155,7 +148,6 @@ class sRewriteTable
         $this->slug = $slug ?: Shopware()->Container()->get('shopware.slug');
         $this->contextService = $contextService ?: Shopware()->Container()->get('shopware_storefront.context_service');
         $this->shopPageService = $shopPageService ?: Shopware()->Container()->get('shopware_storefront.shop_page_service');
-        $this->translationComponent = $translationComponent ?: Shopware()->Container()->get('translation');
     }
 
     /**
@@ -381,8 +373,8 @@ class sRewriteTable
      * Create rewrite rules for articles
      *
      * @param string $lastUpdate
-     * @param int    $limit
-     * @param int    $offset
+     * @param int $limit
+     * @param int $offset
      *
      * @return string
      */
@@ -539,8 +531,8 @@ class sRewriteTable
     /**
      * @deprecated since 5.2 will be removed in 5.3, use \sRewriteTable::createManufacturerUrls
      *
-     * @param null                 $offset
-     * @param null                 $limit
+     * @param null $offset
+     * @param null $limit
      * @param ShopContextInterface $context
      */
     public function sCreateRewriteTableSuppliers($offset = null, $limit = null, ShopContextInterface $context = null)
@@ -551,8 +543,8 @@ class sRewriteTable
 
     /**
      * @param ShopContextInterface $context
-     * @param int|null             $offset
-     * @param int|null             $limit
+     * @param int|null $offset
+     * @param int|null $limit
      *
      * @throws Exception
      * @throws SmartyException
@@ -565,7 +557,8 @@ class sRewriteTable
         }
 
         $ids = $this->getManufacturerIds($offset, $limit);
-        $manufacturers = Shopware()->Container()->get('shopware_storefront.manufacturer_service')->getList($ids, $context);
+        $manufacturers = Shopware()->Container()->get('shopware_storefront.manufacturer_service')->getList($ids,
+            $context);
 
         $seoSupplierRouteTemplate = $this->config->get('seoSupplierRouteTemplate');
         foreach ($manufacturers as $manufacturer) {
@@ -574,7 +567,7 @@ class sRewriteTable
             $path = $this->template->fetch('string:' . $seoSupplierRouteTemplate, $this->data);
             $path = $this->sCleanupPath($path);
 
-            $org_path = 'sViewport=listing&sAction=manufacturer&sSupplier=' . (int) $manufacturer['id'];
+            $org_path = 'sViewport=listing&sAction=manufacturer&sSupplier=' . (int)$manufacturer['id'];
             $this->sInsertUrl($org_path, $path);
         }
     }
@@ -600,6 +593,8 @@ class sRewriteTable
             $fallbackId = $fallbackShop->getId();
         }
 
+        $translator = new Shopware_Components_Translation();
+
         $queryBuilder
             ->andWhere('emotions.isLandingPage = 1')
             ->andWhere('emotions.parentId IS NULL')
@@ -613,16 +608,17 @@ class sRewriteTable
         $routerCampaignTemplate = $this->config->get('routerCampaignTemplate');
 
         foreach ($campaigns as $campaign) {
-            $this->sCreateRewriteTableForSingleCampaign($this->translationComponent, $languageId, $fallbackId, $campaign, $routerCampaignTemplate);
+            $this->sCreateRewriteTableForSingleCampaign($translator, $languageId, $fallbackId, $campaign,
+                $routerCampaignTemplate);
         }
     }
 
     /**
      * @param Shopware_Components_Translation $translator
-     * @param int                             $shopId
-     * @param int                             $fallbackShopId
-     * @param array                           $campaign
-     * @param string                          $routerCampaignTemplate
+     * @param int $shopId
+     * @param int $fallbackShopId
+     * @param array $campaign
+     * @param string $routerCampaignTemplate
      *
      * @throws Exception
      * @throws SmartyException
@@ -651,8 +647,8 @@ class sRewriteTable
      * Create CMS rewrite rules
      * Used in multiple locations
      *
-     * @param int                  $offset
-     * @param int                  $limit
+     * @param int $offset
+     * @param int $limit
      * @param ShopContextInterface $context
      */
     public function sCreateRewriteTableContent($offset = null, $limit = null, ShopContextInterface $context = null)
@@ -688,11 +684,10 @@ class sRewriteTable
         ]);
 
         $insert = $this->getPreparedInsert();
-        $insert->execute([
-            $org_path,
-            $path,
-            Shopware()->Shop()->getId(),
-        ]);
+        $insert->bindParam(':org_path', $org_path, \PDO::PARAM_STR);
+        $insert->bindParam(':path', $path, \PDO::PARAM_STR);
+        $insert->bindParam(':shopId', Shopware()->Shop()->getId(), \PDO::PARAM_INT);
+        $insert->execute();
     }
 
     /**
@@ -833,8 +828,13 @@ class sRewriteTable
     {
         if ($this->preparedInsert === null) {
             $this->preparedInsert = $this->db->prepare('
-                REPLACE INTO s_core_rewrite_urls (org_path, path, main, subshopID)
-                VALUES (?, ?, 1, ?)
+                INSERT INTO s_core_rewrite_urls (org_path, path, main, subshopID)
+                VALUES (:org_path, :path, 1, :shopId)
+                  ON DUPLICATE KEY UPDATE
+                org_path=:org_path,
+                path=:path,
+                main=1,
+                subshopID=:shopId;
             ');
         }
 
@@ -867,7 +867,7 @@ class sRewriteTable
      * Used internally in sSmartyCategoryPath
      *
      * @param int $articleId Id of the article to look for
-     * @param int $parentId  Category subtree root id. If null, the shop category is used.
+     * @param int $parentId Category subtree root id. If null, the shop category is used.
      *
      * @return null|array Category path, or null if no category found
      */
@@ -938,7 +938,7 @@ class sRewriteTable
      * @param array $article
      * @param array $objectData
      * @param array $objectDataFallback
-     * @param array $fieldMappings      array(articleFieldName => objectDataFieldName)
+     * @param array $fieldMappings array(articleFieldName => objectDataFieldName)
      *
      * @return array $article
      */
