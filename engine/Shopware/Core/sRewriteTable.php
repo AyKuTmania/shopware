@@ -688,11 +688,10 @@ class sRewriteTable
         ]);
 
         $insert = $this->getPreparedInsert();
-        $insert->execute([
-            $org_path,
-            $path,
-            Shopware()->Shop()->getId(),
-        ]);
+        $insert->bindParam(':org_path', $org_path, \PDO::PARAM_STR);
+        $insert->bindParam(':path', $path, \PDO::PARAM_STR);
+        $insert->bindParam(':shopId', Shopware()->Shop()->getId(), \PDO::PARAM_INT);
+        $insert->execute();
     }
 
     /**
@@ -833,8 +832,10 @@ class sRewriteTable
     {
         if ($this->preparedInsert === null) {
             $this->preparedInsert = $this->db->prepare('
-                REPLACE INTO s_core_rewrite_urls (org_path, path, main, subshopID)
-                VALUES (?, ?, 1, ?)
+                INSERT INTO s_core_rewrite_urls (org_path, path, main, subshopID)
+                VALUES (:org_path, :path, 1, :shopId)
+                  ON DUPLICATE KEY UPDATE
+                 id=id;
             ');
         }
 
