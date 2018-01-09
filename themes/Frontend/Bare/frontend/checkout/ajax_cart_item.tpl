@@ -101,7 +101,7 @@
 
     {* Article name *}
     {block name='frontend_checkout_ajax_cart_articlename'}
-        {$useAnchor = ($basketItem.modus != 4 && $basketItem.modus != 2)}
+        {$useAnchor = ($basketItem.modus != 4 && $basketItem.modus != 2 && $basketItem.modus != 3)}
         {if $useAnchor}
             <a class="item--link" href="{$detailLink}" title="{$basketItem.articlename|escapeHtml}">
         {else}
