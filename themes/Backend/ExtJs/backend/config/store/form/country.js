@@ -34,6 +34,10 @@ Ext.define('Shopware.apps.Config.store.form.Country', {
 
     sorters: [
         {
+            property: 'position',
+            direction: 'ASC'
+        },
+        {
             property: 'area.name',
             direction: 'ASC'
         },
