@@ -426,6 +426,9 @@ class Compiler
     {
         $config = $this->inheritance->buildConfig($template, $shop);
         $config['shopware-revision'] = $this->release->getRevision();
+        $config['shopware-version-major'] = $this->release->getMajor();
+        $config['shopware-version-minor'] = $this->release->getMinor();
+        $config['shopware-version-patch'] = $this->release->getPatch();
 
         $collection = new ArrayCollection();
 

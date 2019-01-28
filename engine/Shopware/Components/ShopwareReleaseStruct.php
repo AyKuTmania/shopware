@@ -37,6 +37,11 @@ class ShopwareReleaseStruct
     private $versionText;
 
     /**
+     * @var array
+     */
+    private $versionParts;
+
+    /**
      * @var string
      */
     private $revision;
@@ -51,6 +56,7 @@ class ShopwareReleaseStruct
         $this->version = $version;
         $this->versionText = $versionText;
         $this->revision = $revision;
+        preg_match('/(\d).(\d).(\d+)/', $this->version, $this->versionParts);
     }
 
     /**
@@ -59,6 +65,30 @@ class ShopwareReleaseStruct
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMajor()
+    {
+        return $this->versionParts[1];
+    }
+
+    /**
+     * @return integer
+     */
+    public function getMinor()
+    {
+        return $this->versionParts[2];
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPatch()
+    {
+        return $this->versionParts[3];
     }
 
     /**
