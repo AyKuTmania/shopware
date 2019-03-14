@@ -1426,24 +1426,37 @@ SQL;
     {
         $cookieData = $this->front->Request()->getCookie();
         $uniqueId = $this->front->Request()->getCookie('sUniqueID');
+        $userId = $this->session->get('sUserId', 0);
 
         if (!empty($cookieData) && empty($uniqueId)) {
-            $uniqueId = Random::getAlphanumericString(32);
-            $this->front->Response()->setCookie('sUniqueID', $uniqueId, time() + (86400 * 360), '/');
+            /*
+             * if there is a user, we don't need UniqueId
+             */
+            if ($userId) {
+                $uniqueId = '';
+                $this->front->Response()->setCookie('sUniqueID', '', 0, '/');
+            } else {
+                $uniqueId = Random::getAlphanumericString(32);
+                $this->front->Response()->setCookie('sUniqueID', $uniqueId, time() + (86400 * 360), '/');
+            }
         }
 
         // Check if this product is already noted
         $checkForProductId = $this->db->fetchOne(
-            'SELECT id FROM s_order_notes WHERE sUniqueID = ? AND ordernumber = ?',
-            [$uniqueId, $articleOrderNumber]
+            'SELECT id FROM s_order_notes WHERE (sUniqueID = :uniqueId OR (userID != 0 AND userID = :userId)) AND ordernumber = :orderNumber',
+            [
+                ':userId' => $userId,
+                ':uniqueId' => $uniqueId,
+                ':orderNumber' => $articleOrderNumber,
+            ]
         );
 
         if (!$checkForProductId) {
             $queryNewPrice = $this->db->insert(
                 's_order_notes',
                 [
-                    'sUniqueID' => empty($uniqueId) ? $this->session->get('sessionId') : $uniqueId,
-                    'userID' => $this->session->get('sUserId') ?: '0',
+                    'sUniqueID' => $uniqueId,
+                    'userID' => $userId,
                     'articlename' => $articleName,
                     'articleID' => $articleID,
                     'ordernumber' => $articleOrderNumber,
@@ -1518,11 +1531,11 @@ SQL;
 
         $count = (int) $this->db->fetchOne('
             SELECT COUNT(*) FROM s_order_notes n, s_articles a
-            WHERE (sUniqueID = ? OR (userID != 0 AND userID = ?))
+            WHERE (sUniqueID = :uniqueId OR (userID != 0 AND userID = :userId))
             AND a.id = n.articleID AND a.active = 1
         ', [
-            empty($uniqueId) ? $this->session->get('sessionId') : $uniqueId,
-            $this->session->get('sUserId', 0),
+            ':userId' => $this->session->get('sUserId', 0),
+            ':uniqueId' => $uniqueId,
         ]);
 
         return $count;
@@ -1549,12 +1562,12 @@ SQL;
 
         $delete = $this->db->query(
             'DELETE FROM s_order_notes
-            WHERE (sUniqueID = ? OR (userID = ?  AND userID != 0))
-            AND id=?',
+            WHERE (sUniqueID = :uniqueId OR (userID = :userId AND userID != 0))
+            AND id = :id',
             [
-                $this->front->Request()->getCookie('sUniqueID'),
-                $this->session->get('sUserId'),
-                $id,
+                ':uniqueId' => $this->front->Request()->getCookie('sUniqueID'),
+                ':userId' => $this->session->get('sUserId', 0),
+                ':id' => $id,
             ]
         );
         if (!$delete) {
@@ -2108,12 +2121,12 @@ SQL;
         $notes = $this->db->fetchAssoc(
             'SELECT n.ordernumber as arrayKey, n.*
             FROM s_order_notes n, s_articles a
-            WHERE (sUniqueID = ? OR (userID != 0 AND userID = ?))
+            WHERE (sUniqueID = :uniqueId OR (userID != 0 AND userID = :userId))
             AND a.id = n.articleID AND a.active = 1
             ORDER BY n.datum DESC',
             [
-                empty($uniqueId) ? $this->session->get('sessionId') : $uniqueId,
-                $this->session->get('sUserId', 0),
+                ':uniqueId' => $uniqueId,
+                ':userId' => $this->session->get('sUserId', 0),
             ]
         );
 

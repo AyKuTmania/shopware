@@ -676,7 +676,7 @@ class sAdmin
     {
         $this->moduleManager->Basket()->clearBasket();
 
-        Shopware()->Session()->unsetAll();
+        $this->session->unsetAll();
         $this->regenerateSessionId();
 
         $this->eventManager->notify('Shopware_Modules_Admin_Logout_Successful');
@@ -3217,9 +3217,10 @@ class sAdmin
             $newHash = $this->passwordEncoder->reencodePassword($plaintext, $hash, $encoderName);
         }
 
+        $userId = (int) $getUser['id'];
+
         if (!empty($newHash) && $newHash !== $hash) {
             $hash = $newHash;
-            $userId = (int) $getUser['id'];
             $this->db->update(
                 's_user',
                 [
@@ -3230,9 +3231,20 @@ class sAdmin
             );
         }
 
+        // Update note userID
+        $uniqueId = $this->front->Request()->getCookie('sUniqueID');
+        if (!empty($uniqueId)) {
+            $this->connection->executeQuery(
+                'UPDATE s_order_notes SET userID = :userId WHERE sUniqueID = :uniqueId AND userID = 0',
+                [
+                    'userId' => $userId,
+                    'uniqueId' => $uniqueId,
+                ]);
+        }
+
         $this->session->offsetSet('sUserMail', $email);
         $this->session->offsetSet('sUserPassword', $hash);
-        $this->session->offsetSet('sUserId', $getUser['id']);
+        $this->session->offsetSet('sUserId', $userId);
 
         $this->sCheckUser();
     }

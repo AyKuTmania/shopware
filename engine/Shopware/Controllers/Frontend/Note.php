@@ -35,21 +35,35 @@ class Shopware_Controllers_Frontend_Note extends Enlight_Controller_Action
 
     public function postDispatch()
     {
-        Shopware()->Session()->sNotesQuantity = Shopware()->Modules()->Basket()->sCountNotes();
+        $session = $this->get('session');
+
+        $session->offsetSet('sNotesQuantity', $this->get('modules')->Basket()->sCountNotes());
+
+        // Update note userID
+        $userId = $session->get('sUserId');
+        $uniqueId = $this->Request()->getCookie('sUniqueID');
+
+        if (!empty($userId) && !empty($uniqueId)) {
+            $this->get('dbal_connection')->executeQuery('UPDATE s_order_notes SET userID = :userId WHERE sUniqueID = :uniqueId AND userID = 0',
+                [
+                    'userId' => $userId,
+                    'uniqueId' => $uniqueId,
+                ]);
+        }
     }
 
     public function indexAction()
     {
         $view = $this->View();
-        $view->assign('sNotes', Shopware()->Modules()->Basket()->sGetNotes());
-        $view->assign('sUserLoggedIn', Shopware()->Modules()->Admin()->sCheckUser());
-        $view->assign('sOneTimeAccount', Shopware()->Session()->offsetGet('sOneTimeAccount'));
+        $view->assign('sNotes', $this->get('modules')->Basket()->sGetNotes());
+        $view->assign('sUserLoggedIn', $this->get('modules')->Admin()->sCheckUser());
+        $view->assign('sOneTimeAccount', $this->get('session')->offsetGet('sOneTimeAccount'));
     }
 
     public function deleteAction()
     {
         if (!empty($this->Request()->sDelete)) {
-            Shopware()->Modules()->Basket()->sDeleteNote($this->Request()->sDelete);
+            $this->get('modules')->Basket()->sDeleteNote($this->Request()->sDelete);
         }
         $this->forward('index');
     }
@@ -59,7 +73,7 @@ class Shopware_Controllers_Frontend_Note extends Enlight_Controller_Action
         $orderNumber = $this->Request()->getParam('ordernumber');
 
         if ($this->addNote($orderNumber)) {
-            $this->View()->assign('sArticleName', Shopware()->Modules()->Articles()->sGetArticleNameByOrderNumber($orderNumber));
+            $this->View()->assign('sArticleName', $this->get('modules')->Articles()->sGetArticleNameByOrderNumber($orderNumber));
         }
 
         $this->forward('index');
@@ -73,7 +87,7 @@ class Shopware_Controllers_Frontend_Note extends Enlight_Controller_Action
         $this->Response()->setBody(json_encode(
             [
                 'success' => $this->addNote($this->Request()->getParam('ordernumber')),
-                'notesCount' => (int) Shopware()->Modules()->Basket()->sCountNotes(),
+                'notesCount' => (int) $this->get('modules')->Basket()->sCountNotes(),
             ]
         ));
     }
@@ -84,14 +98,14 @@ class Shopware_Controllers_Frontend_Note extends Enlight_Controller_Action
             return false;
         }
 
-        $productId = Shopware()->Modules()->Articles()->sGetArticleIdByOrderNumber($orderNumber);
-        $productName = Shopware()->Modules()->Articles()->sGetArticleNameByOrderNumber($orderNumber);
+        $productId = $this->get('modules')->Articles()->sGetArticleIdByOrderNumber($orderNumber);
+        $productName = $this->get('modules')->Articles()->sGetArticleNameByOrderNumber($orderNumber);
 
         if (empty($productId)) {
             return false;
         }
 
-        Shopware()->Modules()->Basket()->sAddNote($productId, $productName, $orderNumber);
+        $this->get('modules')->Basket()->sAddNote($productId, $productName, $orderNumber);
 
         return true;
     }
