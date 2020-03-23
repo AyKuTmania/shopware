@@ -53,9 +53,9 @@ class Shopware_Plugins_Core_CronProductExport_Bootstrap extends Shopware_Compone
     /**
      * starts all product export for all active product feeds
      *
+     * @return string
      * @throws RuntimeException
      *
-     * @return string
      */
     public function exportProductFiles()
     {
@@ -79,17 +79,18 @@ class Shopware_Plugins_Core_CronProductExport_Bootstrap extends Shopware_Compone
             /** @var Shopware\Models\ProductFeed\ProductFeed $feedModel */
             $fileName = $feedModel->getHash() . '_' . $feedModel->getFileName();
             $filePath = $cacheDir . $fileName;
+
             if ($feedModel->getInterval() === 0) {
                 continue;
-            }elseif($feedModel->getInterval() > 0) {
-                $diffInterval = time();
-                if ($feedModel->getCacheRefreshed()) {
-                    $diffInterval = $diffInterval - $feedModel->getCacheRefreshed()->getTimestamp();
-                }
+            }
 
-                if ($diffInterval < $feedModel->getInterval() && file_exists($filePath)) {
-                    continue;
-                }
+            $diffInterval = time();
+            if ($feedModel->getCacheRefreshed()) {
+                $diffInterval -= $feedModel->getCacheRefreshed()->getTimestamp();
+            }
+
+            if ($diffInterval < $feedModel->getInterval() && file_exists($filePath)) {
+                continue;
             }
 
             $export->sFeedID = $feedModel->getId();
